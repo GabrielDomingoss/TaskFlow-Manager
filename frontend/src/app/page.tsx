@@ -20,15 +20,18 @@ export default function Home() {
     categoryId: "",
   });
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   const { data: summary } = useTasksSummary();
   const { data, isPending: isLoading } = useTasksList({
     ...normalizeTaskFilters(filters),
     page,
-    limit: 10,
+    limit,
   });
 
   const handleFiltersChange = (key: keyof typeof filters, value: string) => {
     setFilters((currentFilters) => ({ ...currentFilters, [key]: value }));
+
+    setPage(1);
   };
 
   return (
@@ -66,6 +69,11 @@ export default function Home() {
         <TasksPagination
           page={data?.meta?.page}
           totalPages={data.meta.totalPages}
+          limit={limit}
+          onLimitChange={(value) => {
+            setLimit(value);
+            setPage(1);
+          }}
           onPageChange={setPage}
         />
       )}

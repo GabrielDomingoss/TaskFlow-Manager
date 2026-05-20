@@ -11,6 +11,8 @@ import {
 import { Search } from "lucide-react";
 import { useCategoriesList } from "../hooks/use-categories-list";
 import { priorityOptions, statusOptions } from "../constants/task-options";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface IFilter {
   search: string;
@@ -28,22 +30,47 @@ interface ITasksFilterProps {
 }
 
 export function TasksFilter({ filters, onFilterChange }: ITasksFilterProps) {
+  const [searchInput, setSearchInput] = useState(filters.search);
   const { data: categories = [] } = useCategoriesList();
+
   return (
     <Card className="border-purple-100 shadow-sm">
       <CardContent className="flex flex-col gap-2 pb-2">
-        <Field>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
+        <div className=" gap-2 flex w-full">
+          <Field>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
 
-            <Input
-              placeholder="Pesquise pelo título da tarefa"
-              value={filters.search}
-              onChange={(event) => onFilterChange("search", event.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </Field>
+              <Input
+                placeholder="Pesquise pelo título da tarefa"
+                value={searchInput}
+                onChange={(event) => {
+                  const value = event.target.value;
+
+                  setSearchInput(value);
+
+                  if (!value.trim()) {
+                    onFilterChange("search", "");
+                  }
+                }}
+                className="pl-10 flex-1"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onFilterChange("search", searchInput);
+                  }
+                }}
+              />
+            </div>
+          </Field>
+
+          <Button
+            className="w-fit p-4 bg-purple-700 hover:bg-purple-600 cursor-pointer"
+            type="button"
+            onClick={() => onFilterChange("search", searchInput)}
+          >
+            Pesquisar
+          </Button>
+        </div>
 
         <div className="flex md:flex-row gap-4 flex-col">
           <Field>

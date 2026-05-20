@@ -43,7 +43,7 @@ export function TasksTable({ tasks }: ITasksTableProps) {
   }
 
   return (
-    <div className="shadow-lg overflow-hidden rounded-lg">
+    <div className="shadow-lg overflow-hidden rounded-lg min-h-[16.25rem]">
       <Table>
         <TableHeader className="bg-purple-800">
           <TableRow className="hover:bg-purple-800">

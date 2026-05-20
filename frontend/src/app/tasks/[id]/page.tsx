@@ -24,15 +24,17 @@ export default function TaskDetailPage() {
   return (
     <section className="flex flex-col container self-center pt-6 px-6 gap-4">
       <div className="flex flex-col md:flex-row items-center gap-2 md:gap-0">
-        <Button size="icon" variant="ghost" asChild>
-          <Link href="/">
-            <ChevronLeft className="text-purple-900" />
-          </Link>
-        </Button>
+        <div className="flex items-center w-full">
+          <Button size="icon" variant="ghost" asChild>
+            <Link href="/">
+              <ChevronLeft className="text-purple-900" />
+            </Link>
+          </Button>
 
-        <h1 className="font-bold text-xl text-purple-900 w-full">
-          Detalhamento da Tarefa
-        </h1>
+          <h1 className="font-bold text-xl text-purple-900 w-full">
+            Detalhamento da Tarefa
+          </h1>
+        </div>
 
         <div className="gap-2 flex md:flex-row">
           <Button
