@@ -75,6 +75,12 @@ PORT=3333
 FRONTEND_URL="http://localhost:3000"
 ```
 
+Execute o generate:
+
+```bash
+npx prisma generate
+```
+
 Execute as migrations:
 
 ```bash
