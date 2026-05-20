@@ -68,7 +68,7 @@ Instale as dependências:
 npm install
 ```
 
-Crie o arquivo .env:
+Crie o arquivo .env com suas credenciais locais do PostgreSQL:
 
 ```bash
 DATABASE_URL="postgresql://SEU_USUARIO:SUA_SENHA@localhost:5432/taskflow_manager?schema=public"
@@ -87,6 +87,8 @@ Execute o seed:
 ```bash
 npx prisma db seed
 ```
+
+Estes comandos criarão as tabelas, aplicarão as migrations e irão popular o banco com os dados iniciais para testes
 
 Inicie o backend:
 
@@ -204,4 +206,5 @@ O projeto não implementa autenticação real, pois o desafio permite o uso de u
 ## Autor
 
 Gabriel Domingos
+
 Desenvolvedor de Software
