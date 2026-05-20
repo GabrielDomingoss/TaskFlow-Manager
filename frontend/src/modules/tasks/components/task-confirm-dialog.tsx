@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,47 +8,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Trash2, TriangleAlert } from "lucide-react";
-import { useTaskDelete } from "../hooks/use-task-delete";
-import { ITask } from "../types/task";
+import { Check } from "lucide-react";
 
-interface IDeleteTaskDialogProps {
-  task: ITask | null;
+interface ITaskConfirmDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onDelete?: () => void;
 }
 
-export function TaskDeleteDialog({
-  task,
+export function TaskConfirmDialog({
   open,
   onOpenChange,
-  onDelete,
-}: IDeleteTaskDialogProps) {
-  const { mutateAsync: deleteTask, isPending: isDeleting } = useTaskDelete();
-
-  const handleDeleteTask = async () => {
-    if (!task) return;
-
-    await deleteTask(task.id);
-    onOpenChange(false);
-    onDelete?.();
-  };
-
+}: ITaskConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:!max-w-md !p-6">
         <AlertDialogHeader>
           <div className="flex flex-col items-center gap-2">
-            <div className="mx-auto flex justify-center items-center h-14 w-14 rounded-full bg-red-100">
-              <TriangleAlert className="w-7 h-7 text-red-600" />
+            <div className="mx-auto flex justify-center items-center h-14 w-14 rounded-full bg-green-100">
+              <Check className="w-7 h-7 text-green-600" />
             </div>
 
-            <AlertDialogTitle>Excluir Tarefa</AlertDialogTitle>
+            <AlertDialogTitle>Salvar alterações?</AlertDialogTitle>
 
             <AlertDialogDescription className="text-center">
-              Tem certeza que deseja excluir a tarefa {`"${task?.title}"`}? Essa
-              ação não poderá ser desfeita.
+              Deseja alterar esta tarefa? As informações da tarefa serão
+              atualizadas.
             </AlertDialogDescription>
           </div>
         </AlertDialogHeader>
@@ -61,12 +43,17 @@ export function TaskDeleteDialog({
           </AlertDialogCancel>
 
           <AlertDialogAction
-            disabled={isDeleting}
             className="bg-purple-600 hover:bg-purple-700 px-4 rounded-md hover:cursor-pointer"
-            onClick={handleDeleteTask}
+            onClick={() => {
+              document.getElementById("task-form")?.dispatchEvent(
+                new Event("submit", {
+                  cancelable: true,
+                  bubbles: true,
+                }),
+              );
+            }}
           >
-            <Trash2 className="mr-2 h-4 w-4" />
-            {isDeleting ? "Excluindo..." : "Excluir"}
+            Confirmar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

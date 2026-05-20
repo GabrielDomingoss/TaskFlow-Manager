@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Loading } from "@/modules/common/components/loading";
 import { TaskDeleteDialog } from "@/modules/tasks/components/task-delete-dialog";
 import TaskDetails from "@/modules/tasks/components/task-details";
+import { TaskNotFound } from "@/modules/tasks/components/task-not-found";
 import { useTaskById } from "@/modules/tasks/hooks/use-task-by-id";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
@@ -16,19 +18,7 @@ export default function TaskDetailPage() {
   const { data: task, isPending: IsLoadingTask } = useTaskById(params.id);
 
   if (IsLoadingTask) {
-    return (
-      <section className="flex flex-col container self-center pt-6 px-6 gap-4">
-        <p className="text-sm text-zinc-500">Carregando tarefa...</p>
-      </section>
-    );
-  }
-
-  if (!task) {
-    return (
-      <section className="flex flex-col container self-center pt-6 px-6 gap-4">
-        <p className="text-sm text-zinc-500">Tarefa não encontrada.</p>
-      </section>
-    );
+    return <Loading />;
   }
 
   return (
@@ -49,26 +39,33 @@ export default function TaskDetailPage() {
             className="px-6 py-5 border-purple-700 text-purple-700 hover:cursor-pointer hover:bg-purple-700 hover:text-white"
             variant="outline"
             onClick={() => setIsDeleteDialogOpen(true)}
+            disabled={!task}
           >
             Excluir
           </Button>
 
           <Button
             className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
-            asChild
+            disabled={!task}
           >
             <Link href={`/tasks/${task?.id}/edit`}>Editar</Link>
           </Button>
         </div>
       </div>
 
-      <TaskDetails task={task} />
-      <TaskDeleteDialog
-        task={task}
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        onDelete={() => router.push("/")}
-      />
+      {!task ? (
+        <TaskNotFound />
+      ) : (
+        <>
+          <TaskDetails task={task} />
+          <TaskDeleteDialog
+            task={task}
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+            onDelete={() => router.push("/")}
+          />
+        </>
+      )}
     </section>
   );
 }

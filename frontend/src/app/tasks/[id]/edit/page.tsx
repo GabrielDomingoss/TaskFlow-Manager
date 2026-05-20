@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "@/modules/common/components/loading";
 import { TaskForm } from "@/modules/tasks/components/task-form";
 import { useTaskById } from "@/modules/tasks/hooks/use-task-by-id";
 import { useParams } from "next/navigation";
@@ -8,17 +9,7 @@ export default function EditTaskPage() {
   const { data: task, isPending: isLoadingTask } = useTaskById(params.id);
 
   if (isLoadingTask) {
-    return (
-      <section className="container self-center px-6 pt-6">
-        <p className="text-sm text-zinc-500">Carregando tarefa...</p>
-      </section>
-    );
-  }
-
-  if (!task) {
-    <section className="container self-center px-6 pt-6">
-      <p className="text-sm text-zinc-500">Tarefa não encontrada.</p>
-    </section>;
+    return <Loading />;
   }
 
   return <TaskForm isEditMode={true} initialData={task} />;

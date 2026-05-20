@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/date";
 import { ITask } from "@/modules/tasks/types/task";
 import { CalendarDays } from "lucide-react";
+import { TaskStatusBadge } from "./task-status-badge";
+import { TaskPriorityBadge } from "./task-priority-badge";
 
 interface ITaskDetails {
   task: ITask;
@@ -29,24 +31,24 @@ export default function TaskDetails({ task }: ITaskDetails) {
           </section>
 
           <section className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-md border p-2">
+            <div className="rounded-md border p-2 flex md:flex-col gap-2">
               <p className="text-sm font-semibold text-zinc-950">Status</p>
 
-              <div className="mt-2 text-sm text-zinc-600">{task.status}</div>
+              <TaskStatusBadge status={task.status} />
             </div>
 
-            <div className="rounded-md border p-2">
+            <div className="rounded-md border p-2 flex md:flex-col gap-2">
               <p className="text-sm font-semibold text-zinc-950">Prioridade</p>
 
-              <div className="mt-2 text-sm text-zinc-600">{task.priority}</div>
+              <TaskPriorityBadge priority={task.priority} />
             </div>
 
-            <div className="rounded-md border p-2">
+            <div className="rounded-md border p-2 flex md:flex-col gap-2">
               <p className="text-sm font-semibold text-zinc-950">
                 Data de Vencimento
               </p>
 
-              <div className="mt-2 flex items-center gap-2 text-sm text-zinc-600">
+              <div className="flex items-center gap-2 text-sm text-zinc-600">
                 <CalendarDays className="h-4 w-4 text-purple-600" />
                 {formatDate(task.dueDate)}
               </div>
