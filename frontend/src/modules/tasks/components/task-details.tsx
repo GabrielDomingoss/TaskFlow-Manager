@@ -30,7 +30,7 @@ export default function TaskDetails({ task }: ITaskDetails) {
             </div>
           </section>
 
-          <section className="grid gap-4 md:grid-cols-3">
+          <section className="grid gap-4 md:grid-cols-4">
             <div className="rounded-md border p-2 flex md:flex-col gap-2">
               <p className="text-sm font-semibold text-zinc-950">Status</p>
 
@@ -41,6 +41,28 @@ export default function TaskDetails({ task }: ITaskDetails) {
               <p className="text-sm font-semibold text-zinc-950">Prioridade</p>
 
               <TaskPriorityBadge priority={task.priority} />
+            </div>
+
+            <div className="rounded-md border p-2 flex md:flex-col gap-2">
+              <p className="text-sm font-semibold text-zinc-950">
+                Data de Criação
+              </p>
+
+              <div className="flex items-center gap-2 text-sm text-zinc-600">
+                <CalendarDays className="h-4 w-4 text-purple-600" />
+                {formatDate(task.createdAt)}
+              </div>
+            </div>
+
+            <div className="rounded-md border p-2 flex md:flex-col gap-2">
+              <p className="text-sm font-semibold text-zinc-950">
+                Última Atualização
+              </p>
+
+              <div className="flex items-center gap-2 text-sm text-zinc-600">
+                <CalendarDays className="h-4 w-4 text-purple-600" />
+                {formatDate(task.updatedAt)}
+              </div>
             </div>
 
             <div className="rounded-md border p-2 flex md:flex-col gap-2">

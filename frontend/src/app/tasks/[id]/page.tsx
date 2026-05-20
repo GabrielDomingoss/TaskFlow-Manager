@@ -2,12 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/modules/common/components/loading";
+import { PageHeader } from "@/modules/common/components/page-header";
 import { TaskDeleteDialog } from "@/modules/tasks/components/task-delete-dialog";
 import TaskDetails from "@/modules/tasks/components/task-details";
 import { TaskNotFound } from "@/modules/tasks/components/task-not-found";
 import { useTaskById } from "@/modules/tasks/hooks/use-task-by-id";
-import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -23,37 +22,30 @@ export default function TaskDetailPage() {
 
   return (
     <section className="flex flex-col container self-center pt-6 px-6 gap-4">
-      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-0">
-        <div className="flex items-center w-full">
-          <Button size="icon" variant="ghost" asChild>
-            <Link href="/">
-              <ChevronLeft className="text-purple-900" />
-            </Link>
-          </Button>
+      <PageHeader
+        title="Detalhamento da Tarefa"
+        backHref="/"
+        actions={
+          <>
+            <Button
+              className="px-6 py-5 border-purple-700 text-purple-700 hover:cursor-pointer hover:bg-purple-700 hover:text-white"
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(true)}
+              disabled={!task}
+            >
+              Excluir
+            </Button>
 
-          <h1 className="font-bold text-xl text-purple-900 w-full">
-            Detalhamento da Tarefa
-          </h1>
-        </div>
-
-        <div className="gap-2 flex md:flex-row">
-          <Button
-            className="px-6 py-5 border-purple-700 text-purple-700 hover:cursor-pointer hover:bg-purple-700 hover:text-white"
-            variant="outline"
-            onClick={() => setIsDeleteDialogOpen(true)}
-            disabled={!task}
-          >
-            Excluir
-          </Button>
-
-          <Button
-            className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
-            disabled={!task}
-          >
-            <Link href={`/tasks/${task?.id}/edit`}>Editar</Link>
-          </Button>
-        </div>
-      </div>
+            <Button
+              className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
+              disabled={!task}
+              onClick={() => router.push(`/tasks/${task?.id}/edit`)}
+            >
+              Editar
+            </Button>
+          </>
+        }
+      />
 
       {!task ? (
         <TaskNotFound />

@@ -128,6 +128,7 @@ export function TasksFilter({ filters, onFilterChange }: ITasksFilterProps) {
                 <SelectValue placeholder="Pesquise por categoria" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="ALL">Todas</SelectItem>
                 {categories.map((option) => (
                   <SelectItem key={option.id} value={option.id}>
                     {option.name}

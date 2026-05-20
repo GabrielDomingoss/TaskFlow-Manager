@@ -19,12 +19,14 @@ export function Navbar() {
           </div>
         </div>
 
-        <div className=" flex items-center gap-3">
-          <div className="hidden text-right sm:block">
-            <p className="text-sm font-medium text-zinc-950">
+        <div className="flex items-center gap-3">
+          <div className="hidden text-right sm:flex flex-col">
+            <span className="text-sm font-medium text-zinc-950">
               Gabriel Domingos
-            </p>
-            <span className="text-xs text-zinc-500">Desenvolvedor</span>
+            </span>
+            <span className="text-xs text-zinc-500">
+              Desenvolvedor de Software
+            </span>
           </div>
 
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">

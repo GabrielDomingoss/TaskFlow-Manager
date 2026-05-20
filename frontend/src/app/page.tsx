@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/modules/common/components/page-header";
 import { TaskTableSkeleton } from "@/modules/tasks/components/task-table-skeleton";
 import { TasksFilter } from "@/modules/tasks/components/tasks-filter";
 import { TasksIndicatorsCards } from "@/modules/tasks/components/tasks-indicators-cards";
@@ -36,20 +37,18 @@ export default function Home() {
 
   return (
     <section className="flex flex-col container self-center pt-6 px-6 gap-6">
-      <section className="flex items-center flex-col md:flex-row gap-4 md:gap-0">
-        <div className="w-full">
-          <h1 className="font-bold text-2xl text-purple-900">Bem Vindo!</h1>
-          <h5 className="text-sm text-gray-500">
-            Comece criando novas tarefas!
-          </h5>
-        </div>
-
-        <div className="w-fit">
-          <Button className="px-6 py-5 bg-purple-700" asChild>
+      <PageHeader
+        title="Bem vindo!"
+        description="Comece criando novas tarefas!"
+        actions={
+          <Button
+            asChild
+            className="bg-purple-700 hover:!bg-purple-800 px-6 py-5"
+          >
             <Link href="/tasks/new">Nova tarefa</Link>
           </Button>
-        </div>
-      </section>
+        }
+      />
 
       <TasksIndicatorsCards
         pending={summary?.pending ?? 0}
@@ -65,10 +64,10 @@ export default function Home() {
         <TasksTable tasks={data?.data ?? []} />
       )}
 
-      {data?.data.length && (
+      {Boolean(data?.data.length) && (
         <TasksPagination
-          page={data?.meta?.page}
-          totalPages={data.meta.totalPages}
+          page={data?.meta?.page ?? 1}
+          totalPages={data?.meta.totalPages ?? 1}
           limit={limit}
           onLimitChange={(value) => {
             setLimit(value);

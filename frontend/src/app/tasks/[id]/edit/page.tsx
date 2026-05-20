@@ -1,6 +1,6 @@
 "use client";
 import { Loading } from "@/modules/common/components/loading";
-import { TaskForm } from "@/modules/tasks/components/task-form";
+import { TaskForm } from "@/modules/tasks/components/task-form/task-form";
 import { useTaskById } from "@/modules/tasks/hooks/use-task-by-id";
 import { useParams } from "next/navigation";
 
