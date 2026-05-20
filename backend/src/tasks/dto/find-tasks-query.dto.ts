@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Priority, TaskStatus } from '@prisma/client';
+import { Priority, TaskStatus } from '../../../generated/prisma/client';
 import { Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 

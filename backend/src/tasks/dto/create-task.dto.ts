@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Priority, TaskStatus } from '@prisma/client';
+import { Priority, TaskStatus } from '../../../generated/prisma/client';
 import {
   IsArray,
   IsDateString,
