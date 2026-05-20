@@ -6,7 +6,9 @@ import { TasksFilter } from "@/modules/tasks/components/tasks-filter";
 import { TasksIndicatorsCards } from "@/modules/tasks/components/tasks-indicators-cards";
 import { TasksPagination } from "@/modules/tasks/components/tasks-pagination";
 import { TasksTable } from "@/modules/tasks/components/tasks-table";
-import { tasks } from "@/modules/tasks/data/tasks-mock";
+import { useTasks } from "@/modules/tasks/hooks/use-tasks";
+import { useTasksSummary } from "@/modules/tasks/hooks/use-tasks-summary";
+import { normalizeTaskFilters } from "@/modules/tasks/utils/normalize-task-filters";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -18,7 +20,12 @@ export default function Home() {
     categoryId: "",
   });
   const [page, setPage] = useState(1);
-  const isLoading = false;
+  const { data: summary } = useTasksSummary();
+  const { data, isPending: isLoading } = useTasks({
+    ...normalizeTaskFilters(filters),
+    page,
+    limit: 10,
+  });
 
   const handleFiltersChange = (key: keyof typeof filters, value: string) => {
     setFilters((currentFilters) => ({ ...currentFilters, [key]: value }));
@@ -41,14 +48,26 @@ export default function Home() {
         </div>
       </section>
 
-      <TasksIndicatorsCards />
+      <TasksIndicatorsCards
+        pending={summary?.pending ?? 0}
+        inProgress={summary?.inProgress ?? 0}
+        done={summary?.done ?? 0}
+      />
 
       <TasksFilter filters={filters} onFilterChange={handleFiltersChange} />
 
-      {isLoading ? <TaskTableSkeleton /> : <TasksTable tasks={tasks} />}
+      {isLoading ? (
+        <TaskTableSkeleton />
+      ) : (
+        <TasksTable tasks={data?.data ?? []} />
+      )}
 
-      {tasks.length && (
-        <TasksPagination page={page} totalPages={5} onPageChange={setPage} />
+      {data?.data.length && (
+        <TasksPagination
+          page={data?.meta?.page}
+          totalPages={data.meta.totalPages}
+          onPageChange={setPage}
+        />
       )}
     </section>
   );

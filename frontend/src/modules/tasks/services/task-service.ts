@@ -1,6 +1,11 @@
 import { api } from "@/lib/api";
-import { IGetTaskParams, IPaginatedTasksResponse, ITask } from "../types/task";
-import { TaskFormData } from "../schemas/task-schema";
+import {
+  IGetTaskParams,
+  IPaginatedTasksResponse,
+  ITask,
+  ITasksSummary,
+  ITaskPayload,
+} from "../types/task";
 
 export async function getTasks(params?: IGetTaskParams) {
   const { data } = await api.get<IPaginatedTasksResponse>("/tasks", { params });
@@ -14,18 +19,24 @@ export async function getTaskById(id: string) {
   return data;
 }
 
-export async function createTask(payload?: TaskFormData) {
+export async function createTask(payload?: ITaskPayload) {
   const { data } = await api.post<ITask>("/tasks", payload);
 
   return data;
 }
 
-export async function updateTask(id: string, payload: TaskFormData) {
-  const { data } = await api.put<ITask>(`/tasks/${id}`, payload);
+export async function updateTask(id: string, payload: ITaskPayload) {
+  const { data } = await api.patch<ITask>(`/tasks/${id}`, payload);
 
   return data;
 }
 
 export async function deleteTask(id: string) {
-  await api.delete(`/task/${id}`);
+  await api.delete(`/tasks/${id}`);
+}
+
+export async function getTasksSummary() {
+  const { data } = await api.get<ITasksSummary>("/tasks/summary");
+
+  return data;
 }

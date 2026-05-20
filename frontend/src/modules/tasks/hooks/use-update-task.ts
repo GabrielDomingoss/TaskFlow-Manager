@@ -11,6 +11,7 @@ export function useUpdateTask() {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["tasks", variables.id] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-summary"] });
 
       toast.success("Tarefa atualizada com sucesso");
     },

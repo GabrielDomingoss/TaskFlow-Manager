@@ -2,28 +2,38 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, Clock3, LoaderCircle } from "lucide-react";
 
-const indicators = [
-  {
-    label: "Pendentes",
-    value: 40,
-    icon: Clock3,
-    className: "from-purple-700 to-purple-600",
-  },
-  {
-    label: "Em andamento",
-    value: 40,
-    icon: LoaderCircle,
-    className: "from-purple-800 to-violet-600",
-  },
-  {
-    label: "Concluídas",
-    value: 40,
-    icon: CheckCircle2,
-    className: "from-violet-700 to-fuchsia-600",
-  },
-];
+interface ITasksIndicatorsCardsProps {
+  pending: number;
+  inProgress: number;
+  done: number;
+}
 
-export function TasksIndicatorsCards() {
+export function TasksIndicatorsCards({
+  pending,
+  inProgress,
+  done,
+}: ITasksIndicatorsCardsProps) {
+  const indicators = [
+    {
+      label: "Pendentes",
+      value: pending,
+      icon: Clock3,
+      className: "from-purple-700 to-purple-600",
+    },
+    {
+      label: "Em andamento",
+      value: inProgress,
+      icon: LoaderCircle,
+      className: "from-purple-800 to-violet-600",
+    },
+    {
+      label: "Concluídas",
+      value: done,
+      icon: CheckCircle2,
+      className: "from-violet-700 to-fuchsia-600",
+    },
+  ];
+
   return (
     <section className="grid md:grid-cols-3 gap-4">
       {indicators.map((indicator) => {

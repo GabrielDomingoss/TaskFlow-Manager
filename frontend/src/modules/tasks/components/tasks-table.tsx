@@ -45,39 +45,36 @@ export function TasksTable({ tasks }: ITasksTableProps) {
       <Table>
         <TableHeader className="bg-purple-800">
           <TableRow className="hover:bg-purple-800">
-            <TableHead className="text-white">Id</TableHead>
             <TableHead className="text-white">Titulo</TableHead>
             <TableHead className="text-white">Vencimento</TableHead>
             <TableHead className="text-white">Prioridade</TableHead>
             <TableHead className="text-white">Status</TableHead>
-            <TableHead className="text-white">Atribuído a</TableHead>
-            <TableHead className="text-white">Criado em</TableHead>
-            <TableHead className="text-white">Atualizado em</TableHead>
-            <TableHead className="text-white">Categoria</TableHead>
+            <TableHead className="text-white">Responsável</TableHead>
+            <TableHead className="text-white">Categorias</TableHead>
             <TableHead className="text-white">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {tasks.map((task) => (
             <TableRow key={task.id}>
-              <TableCell>{task.id}</TableCell>
               <TableCell>{task.title}</TableCell>
               <TableCell>{formatDate(task.dueDate)}</TableCell>
               <TableCell>{task.priority}</TableCell>
               <TableCell>{task.status}</TableCell>
-              <TableCell>{task.userId}</TableCell>
-              <TableCell>{formatDate(task.createdAt)}</TableCell>
-              <TableCell>{formatDate(task.updatedAt)}</TableCell>
+              <TableCell>{task.user.name}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-2">
-                  {task.categories.map((category) => (
-                    <Badge
-                      key={category.id}
-                      className="bg-purple-100 text-xs font-medium text-purple-700"
-                    >
-                      {category.name}
+                  {task.categories[0] && (
+                    <Badge className="bg-purple-100 text-xs font-medium text-purple-700">
+                      {task.categories[0].name}
                     </Badge>
-                  ))}
+                  )}
+
+                  {task.categories.length > 1 && (
+                    <Badge className="bg-purple-100 text-xs font-medium text-purple-700">
+                      + {task.categories.length - 1}
+                    </Badge>
+                  )}
                 </div>
               </TableCell>
               <TableCell className="gap-4">
@@ -120,7 +117,9 @@ export function TasksTable({ tasks }: ITasksTableProps) {
         task={taskToDelete}
         open={Boolean(taskToDelete)}
         onOpenChange={(open: boolean) => {
-          if (!open) setTaskToDelete(null);
+          if (!open) {
+            setTaskToDelete(null);
+          }
         }}
       />
     </div>

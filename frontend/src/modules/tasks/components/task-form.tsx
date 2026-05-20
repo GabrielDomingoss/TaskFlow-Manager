@@ -33,12 +33,29 @@ import Link from "next/link";
 import { useCreateTask } from "../hooks/use-create-task";
 import { useUpdateTask } from "../hooks/use-update-task";
 import { cn } from "@/lib/utils";
+import { CURRENT_USER_ID } from "../constants/current-user";
 
 const categories: ICategory[] = [
-  { id: "001ab", name: "Frontend", createdAt: new Date().toString() },
-  { id: "2", name: "Backend", createdAt: new Date().toString() },
-  { id: "3", name: "Documentação", createdAt: new Date().toString() },
-  { id: "4", name: "Setup", createdAt: new Date().toString() },
+  {
+    id: "89729cf3-5448-4186-b714-dfcf0aecb5a6",
+    name: "Frontend",
+    createdAt: new Date().toString(),
+  },
+  {
+    id: "b35c0fe4-0e91-4354-9677-907b055096a3",
+    name: "Backend",
+    createdAt: new Date().toString(),
+  },
+  {
+    id: "6f6605a6-31a8-46cf-9d46-6c574772c5ae",
+    name: "Documentação",
+    createdAt: new Date().toString(),
+  },
+  {
+    id: "e9e9a74b-94c2-41b8-89db-4efc8efe6a2a",
+    name: "Setup",
+    createdAt: new Date().toString(),
+  },
 ];
 
 interface ITaskFormProps {
@@ -53,6 +70,7 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
   const { mutateAsync: updateTask, isPending: isUpdatingTask } =
     useUpdateTask();
   const isSaving = isCreatingTask || isUpdatingTask;
+
   const { register, control, handleSubmit, formState } = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
@@ -66,11 +84,18 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
   });
 
   const handleSubmitTask = async (data: TaskFormData) => {
+    const payload = {
+      ...data,
+      userId: CURRENT_USER_ID,
+    };
+
     if (isEditMode && initialData?.id) {
-      await updateTask({ id: initialData.id, payload: data });
+      await updateTask({ id: initialData.id, payload });
+      router.push("/");
+      return;
     }
 
-    await createTask(data);
+    await createTask(payload);
     router.push("/");
   };
 
@@ -103,7 +128,7 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
             className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
             type="submit"
             disabled={isSaving}
-            asChild
+            form="task-form"
           >
             Salvar
           </Button>
@@ -112,7 +137,7 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
 
       <Card className="border-purple-100 bg-white shadow-sm">
         <CardContent>
-          <form onSubmit={handleSubmit(handleSubmitTask)}>
+          <form onSubmit={handleSubmit(handleSubmitTask)} id="task-form">
             <div className="flex flex-col p-6 rounded-sm gap-4">
               <div className="flex gap-4 flex-col md:flex-row">
                 <Field>
@@ -173,7 +198,7 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
                           <Button
                             variant="outline"
                             data-empty={!field.value}
-                            className="w-full justify-between text-left font-normal bg-white text-muted-foreground rounded-md"
+                            className="w-full justify-between text-left font-normal bg-white rounded-md"
                           >
                             {field.value ? (
                               formatDate(field.value)

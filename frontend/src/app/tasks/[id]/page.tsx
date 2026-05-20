@@ -1,46 +1,74 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { TaskDeleteDialog } from "@/modules/tasks/components/task-delete-dialog";
 import TaskDetails from "@/modules/tasks/components/task-details";
-import { tasks } from "@/modules/tasks/data/tasks-mock";
+import { useTaskById } from "@/modules/tasks/hooks/use-task-by-id";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
-interface ITaskDetailPageProps {
-  params: Promise<{ id: string }>;
-}
+export default function TaskDetailPage() {
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { data: task, isPending: IsLoadingTask } = useTaskById(params.id);
 
-export default async function TaskDetailPage({ params }: ITaskDetailPageProps) {
-  const { id } = await params;
-
-  const task = tasks.find((task) => task.id === id);
+  if (IsLoadingTask) {
+    return (
+      <section className="flex flex-col container self-center pt-6 px-6 gap-4">
+        <p className="text-sm text-zinc-500">Carregando tarefa...</p>
+      </section>
+    );
+  }
 
   if (!task) {
-    notFound();
+    return (
+      <section className="flex flex-col container self-center pt-6 px-6 gap-4">
+        <p className="text-sm text-zinc-500">Tarefa não encontrada.</p>
+      </section>
+    );
   }
 
   return (
     <section className="flex flex-col container self-center pt-6 px-6 gap-4">
-      <div className="flex flex-col items-center md:flex-row gap-2 md:gap-0">
-        <div className="flex items-center w-full">
-          <Button size="icon" variant="ghost" asChild>
-            <Link href="/">
-              <ChevronLeft className="text-purple-900" />
-            </Link>
-          </Button>
+      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-0">
+        <Button size="icon" variant="ghost" asChild>
+          <Link href="/">
+            <ChevronLeft className="text-purple-900" />
+          </Link>
+        </Button>
 
-          <h1 className="font-bold text-xl text-purple-900 w-full">
-            Detalhamento da Tarefa
-          </h1>
-        </div>
+        <h1 className="font-bold text-xl text-purple-900 w-full">
+          Detalhamento da Tarefa
+        </h1>
 
         <div className="gap-2 flex md:flex-row">
-          <Button className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50">
+          <Button
+            className="px-6 py-5 border-purple-700 text-purple-700 hover:cursor-pointer hover:bg-purple-700 hover:text-white"
+            variant="outline"
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
+            Excluir
+          </Button>
+
+          <Button
+            className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
+            asChild
+          >
             <Link href={`/tasks/${task?.id}/edit`}>Editar</Link>
           </Button>
         </div>
       </div>
 
       <TaskDetails task={task} />
+      <TaskDeleteDialog
+        task={task}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        onDelete={() => router.push("/")}
+      />
     </section>
   );
 }

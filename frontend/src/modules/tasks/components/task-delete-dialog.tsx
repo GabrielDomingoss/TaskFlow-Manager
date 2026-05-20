@@ -18,12 +18,14 @@ interface IDeleteTaskDialogProps {
   task: ITask | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onDelete?: () => void;
 }
 
 export function TaskDeleteDialog({
   task,
   open,
   onOpenChange,
+  onDelete,
 }: IDeleteTaskDialogProps) {
   const { mutateAsync: deleteTask, isPending: isDeleting } = useDeleteTask();
 
@@ -32,7 +34,9 @@ export function TaskDeleteDialog({
 
     await deleteTask(task.id);
     onOpenChange(false);
+    onDelete?.();
   };
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="sm:!max-w-md !p-6">
@@ -58,7 +62,7 @@ export function TaskDeleteDialog({
 
           <AlertDialogAction
             disabled={isDeleting}
-            className="bg-purple-600 hover:bg-purple-700 px-4 rounded-md houver:cursor-pointer"
+            className="bg-purple-600 hover:bg-purple-700 px-4 rounded-md hover:cursor-pointer"
             onClick={handleDeleteTask}
           >
             <Trash2 className="mr-2 h-4 w-4" />

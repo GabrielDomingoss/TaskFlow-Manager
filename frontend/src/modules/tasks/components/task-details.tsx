@@ -15,7 +15,7 @@ export default function TaskDetails({ task }: ITaskDetails) {
           <section>
             <h2 className="text-sm font-semibold text-zinc-950">Título</h2>
 
-            <div className="mt-2 rounded-md border p-2 text-sm font-medium text-zinc-900">
+            <div className="mt-2 rounded-md border p-2 text-sm font-medium text-zinc-600">
               {task.title}
             </div>
           </section>

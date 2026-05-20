@@ -9,6 +9,7 @@ export function useCreateTask() {
     mutationFn: createTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-summary"] });
 
       toast.success("Tarefa criada com sucesso!");
     },

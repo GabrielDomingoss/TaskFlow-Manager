@@ -9,6 +9,8 @@ export function useDeleteTask() {
     mutationFn: deleteTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      queryClient.invalidateQueries({ queryKey: ["tasks-summary"] });
+
       toast.success("Tarefa removida com sucesso");
     },
     onError: () => {

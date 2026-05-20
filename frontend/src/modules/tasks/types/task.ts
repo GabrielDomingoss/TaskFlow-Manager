@@ -1,5 +1,6 @@
 import { TaskFormData } from "../schemas/task-schema";
 import { ICategory } from "./category";
+import { IUser } from "./user";
 
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 export type StatusPriority = "PENDING" | "IN_PROGRESS" | "DONE";
@@ -11,7 +12,7 @@ export interface ITask {
   dueDate: string;
   priority: TaskPriority;
   status: StatusPriority;
-  userId: string;
+  user: IUser;
   createdAt: string;
   updatedAt: string;
   categories: ICategory[];
@@ -25,15 +26,35 @@ export interface IGetTaskParams {
   categoryId?: string;
 }
 
-export interface IPaginatedTasksResponse {
-  data: ITask[];
+interface IMeta {
   total: number;
   page: number;
   limit: number;
   totalPages: number;
 }
+export interface IPaginatedTasksResponse {
+  data: ITask[];
+  meta: IMeta;
+}
 
 export interface IUpdateTaskParams {
   id: string;
-  payload: TaskFormData;
+  payload: ITaskPayload;
+}
+
+export interface ITaskFilters {
+  search: string;
+  status: string;
+  priority: string;
+  categoryId: string;
+}
+
+export interface ITasksSummary {
+  pending: number;
+  inProgress: number;
+  done: number;
+}
+
+export interface ITaskPayload extends TaskFormData {
+  userId: string;
 }
