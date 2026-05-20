@@ -6,7 +6,7 @@ import { TasksFilter } from "@/modules/tasks/components/tasks-filter";
 import { TasksIndicatorsCards } from "@/modules/tasks/components/tasks-indicators-cards";
 import { TasksPagination } from "@/modules/tasks/components/tasks-pagination";
 import { TasksTable } from "@/modules/tasks/components/tasks-table";
-import { useTasks } from "@/modules/tasks/hooks/use-tasks";
+import { useTasksList } from "@/modules/tasks/hooks/use-tasks-list";
 import { useTasksSummary } from "@/modules/tasks/hooks/use-tasks-summary";
 import { normalizeTaskFilters } from "@/modules/tasks/utils/normalize-task-filters";
 import Link from "next/link";
@@ -21,7 +21,7 @@ export default function Home() {
   });
   const [page, setPage] = useState(1);
   const { data: summary } = useTasksSummary();
-  const { data, isPending: isLoading } = useTasks({
+  const { data, isPending: isLoading } = useTasksList({
     ...normalizeTaskFilters(filters),
     page,
     limit: 10,

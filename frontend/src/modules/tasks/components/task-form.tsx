@@ -25,38 +25,16 @@ import { taskSchema } from "../schemas/task-schema";
 import { Controller, useForm } from "react-hook-form";
 import { TaskFormData } from "../schemas/task-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ICategory } from "../types/category";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useCreateTask } from "../hooks/use-create-task";
-import { useUpdateTask } from "../hooks/use-update-task";
+import { useTaskCreate } from "../hooks/use-task-create";
+import { useTaskUpdate } from "../hooks/use-task-update";
 import { cn } from "@/lib/utils";
 import { CURRENT_USER_ID } from "../constants/current-user";
-
-const categories: ICategory[] = [
-  {
-    id: "89729cf3-5448-4186-b714-dfcf0aecb5a6",
-    name: "Frontend",
-    createdAt: new Date().toString(),
-  },
-  {
-    id: "b35c0fe4-0e91-4354-9677-907b055096a3",
-    name: "Backend",
-    createdAt: new Date().toString(),
-  },
-  {
-    id: "6f6605a6-31a8-46cf-9d46-6c574772c5ae",
-    name: "Documentação",
-    createdAt: new Date().toString(),
-  },
-  {
-    id: "e9e9a74b-94c2-41b8-89db-4efc8efe6a2a",
-    name: "Setup",
-    createdAt: new Date().toString(),
-  },
-];
+import { useCategoriesList } from "../hooks/use-categories-list";
+import { priorityOptions, statusOptions } from "../constants/task-options";
 
 interface ITaskFormProps {
   initialData?: ITask;
@@ -66,9 +44,10 @@ interface ITaskFormProps {
 export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
   const router = useRouter();
   const { mutateAsync: createTask, isPending: isCreatingTask } =
-    useCreateTask();
+    useTaskCreate();
   const { mutateAsync: updateTask, isPending: isUpdatingTask } =
-    useUpdateTask();
+    useTaskUpdate();
+  const { data: categories = [] } = useCategoriesList();
   const isSaving = isCreatingTask || isUpdatingTask;
 
   const { register, control, handleSubmit, formState } = useForm<TaskFormData>({
@@ -171,9 +150,11 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
                         </SelectTrigger>
 
                         <SelectContent>
-                          <SelectItem value="LOW">Baixa</SelectItem>
-                          <SelectItem value="MEDIUM">Média</SelectItem>
-                          <SelectItem value="HIGH">Alta</SelectItem>
+                          {priorityOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     )}
@@ -245,11 +226,14 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
                           </SelectTrigger>
 
                           <SelectContent>
-                            <SelectItem value="PENDING">Pendente</SelectItem>
-                            <SelectItem value="IN_PROGRESS">
-                              Em andamento
-                            </SelectItem>
-                            <SelectItem value="DONE">Concluída</SelectItem>
+                            {statusOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       )}

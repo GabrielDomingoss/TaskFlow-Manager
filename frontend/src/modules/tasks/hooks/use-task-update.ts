@@ -3,7 +3,7 @@ import { updateTask } from "../services/task-service";
 import { IUpdateTaskParams } from "../types/task";
 import { toast } from "sonner";
 
-export function useUpdateTask() {
+export function useTaskUpdate() {
   const queryClient = useQueryClient();
 
   return useMutation({

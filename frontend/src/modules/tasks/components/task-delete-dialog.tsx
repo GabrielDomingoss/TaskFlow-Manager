@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Trash2, TriangleAlert } from "lucide-react";
-import { useDeleteTask } from "../hooks/use-delete-task";
+import { useTaskDelete } from "../hooks/use-task-delete";
 import { ITask } from "../types/task";
 
 interface IDeleteTaskDialogProps {
@@ -27,7 +27,7 @@ export function TaskDeleteDialog({
   onOpenChange,
   onDelete,
 }: IDeleteTaskDialogProps) {
-  const { mutateAsync: deleteTask, isPending: isDeleting } = useDeleteTask();
+  const { mutateAsync: deleteTask, isPending: isDeleting } = useTaskDelete();
 
   const handleDeleteTask = async () => {
     if (!task) return;

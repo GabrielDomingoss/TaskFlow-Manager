@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTask } from "../services/task-service";
 import { toast } from "sonner";
 
-export function useCreateTask() {
+export function useTaskCreate() {
   const queryClient = useQueryClient();
 
   return useMutation({

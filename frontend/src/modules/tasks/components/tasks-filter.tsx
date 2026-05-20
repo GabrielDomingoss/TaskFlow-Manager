@@ -9,25 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
-
-const statusOptions = [
-  { label: "Todos", value: "ALL" },
-  { label: "Pendente", value: "PENDING" },
-  { label: "Em andamento", value: "IN_PROGRESS" },
-  { label: "Concluída", value: "DONE" },
-];
-
-const priorityOptions = [
-  { label: "Todas", value: "ALL" },
-  { label: "Baixa", value: "LOW" },
-  { label: "Média", value: "MEDIUM" },
-  { label: "Alta", value: "HIGH" },
-];
-
-const categoryOptions = [
-  { label: "Todas", value: "ALL" },
-  { label: "Desenvolvimento", value: "001ab" },
-];
+import { useCategoriesList } from "../hooks/use-categories-list";
+import { priorityOptions, statusOptions } from "../constants/task-options";
 
 interface IFilter {
   search: string;
@@ -45,6 +28,7 @@ interface ITasksFilterProps {
 }
 
 export function TasksFilter({ filters, onFilterChange }: ITasksFilterProps) {
+  const { data: categories = [] } = useCategoriesList();
   return (
     <Card className="border-purple-100 shadow-sm">
       <CardContent className="flex flex-col gap-2 pb-2">
@@ -117,9 +101,9 @@ export function TasksFilter({ filters, onFilterChange }: ITasksFilterProps) {
                 <SelectValue placeholder="Pesquise por categoria" />
               </SelectTrigger>
               <SelectContent>
-                {categoryOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                {categories.map((option) => (
+                  <SelectItem key={option.id} value={option.id}>
+                    {option.name}
                   </SelectItem>
                 ))}
               </SelectContent>
