@@ -34,7 +34,6 @@ Sistema fullstack de gerenciamento de tarefas com categorias, filtros, paginaç�
 - Excluir tarefas com confirmação
 - Vincular múltiplas categorias a uma tarefa
 - Indicadores por status
-- Usuário fixo simulado
 
 ## Como executar localmente
 
@@ -76,7 +75,7 @@ PORT=3333
 FRONTEND_URL="http://localhost:3000"
 ```
 
-Excute as migrations:
+Execute as migrations:
 
 ```bash
 npx prisma migrate dev
