@@ -16,6 +16,7 @@ import Link from "next/link";
 import { TaskDeleteDialog } from "./task-delete-dialog";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { TaskStatusBadge } from "./task-status-badge";
 
 interface ITasksTableProps {
   tasks: ITask[];
@@ -60,7 +61,9 @@ export function TasksTable({ tasks }: ITasksTableProps) {
               <TableCell>{task.title}</TableCell>
               <TableCell>{formatDate(task.dueDate)}</TableCell>
               <TableCell>{task.priority}</TableCell>
-              <TableCell>{task.status}</TableCell>
+              <TableCell>
+                <TaskStatusBadge status={task.status} />
+              </TableCell>
               <TableCell>{task.user.name}</TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-2">
