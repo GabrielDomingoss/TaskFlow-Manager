@@ -21,7 +21,7 @@ export default function Home() {
     categoryId: "",
   });
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(5);
   const { data: summary } = useTasksSummary();
   const { data, isPending: isLoading } = useTasksList({
     ...normalizeTaskFilters(filters),
