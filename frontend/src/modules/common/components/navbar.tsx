@@ -1,6 +1,9 @@
+"use client";
+import { useCurrentUser } from "@/modules/users/hooks/use-current-service";
 import { CircleUserRound, ClipboardList } from "lucide-react";
 
 export function Navbar() {
+  const { data: user } = useCurrentUser();
   return (
     <header className="border-b border-purple-100 bg-white">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
@@ -22,10 +25,10 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <div className="hidden text-right sm:flex flex-col">
             <span className="text-sm font-medium text-zinc-950">
-              Gabriel Domingos
+              {user?.name ?? "Usuário"}
             </span>
             <span className="text-xs text-zinc-500">
-              Desenvolvedor de Software
+              {user.email ?? "Desenvolvedor de Software"}
             </span>
           </div>
 
