@@ -14,11 +14,7 @@ export default function TaskDetailPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const { data: task, isPending: IsLoadingTask } = useTaskById(params.id);
-
-  if (IsLoadingTask) {
-    return <Loading />;
-  }
+  const { data: task, isPending: isLoadingTask } = useTaskById(params.id);
 
   return (
     <section className="flex flex-col container self-center pt-6 px-6 gap-4">
@@ -31,14 +27,14 @@ export default function TaskDetailPage() {
               className="px-6 py-5 border-purple-700 text-purple-700 hover:cursor-pointer hover:bg-purple-700 hover:text-white"
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(true)}
-              disabled={!task}
+              disabled={!task || isLoadingTask}
             >
               Excluir
             </Button>
 
             <Button
               className="px-6 py-5 bg-purple-700 hover:cursor-pointer hover:opacity-50"
-              disabled={!task}
+              disabled={!task || isLoadingTask}
               onClick={() => router.push(`/tasks/${task?.id}/edit`)}
             >
               Editar
@@ -47,7 +43,9 @@ export default function TaskDetailPage() {
         }
       />
 
-      {!task ? (
+      {isLoadingTask ? (
+        <Loading />
+      ) : !task ? (
         <TaskNotFound />
       ) : (
         <>

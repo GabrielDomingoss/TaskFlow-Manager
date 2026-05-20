@@ -1,6 +1,7 @@
 "use client";
 import { useCurrentUser } from "@/modules/users/hooks/use-current-service";
 import { CircleUserRound, ClipboardList } from "lucide-react";
+import Link from "next/link";
 
 export function Navbar() {
   const { data: user } = useCurrentUser();
@@ -8,9 +9,11 @@ export function Navbar() {
     <header className="border-b border-purple-100 bg-white">
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-purple-700 text-white">
-            <ClipboardList className="h-5 w-5" />
-          </div>
+          <Link href="/">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-purple-700 text-white">
+              <ClipboardList className="h-5 w-5" />
+            </div>
+          </Link>
 
           <div>
             <p className="text-sm font-bold text-purple-900">
@@ -28,7 +31,7 @@ export function Navbar() {
               {user?.name ?? "Usuário"}
             </span>
             <span className="text-xs text-zinc-500">
-              {user.email ?? "Desenvolvedor de Software"}
+              {user?.email ?? "Desenvolvedor de Software"}
             </span>
           </div>
 
