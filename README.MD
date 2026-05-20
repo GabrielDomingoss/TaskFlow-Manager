@@ -44,6 +44,16 @@ Sistema fullstack de gerenciamento de tarefas com categorias, filtros, paginaç�
 - npm
 - PostgreSQL instalado localmente
 
+## Banco de dados
+
+O projeto utiliza PostgreSQL localmente.
+
+Após instalar o PostgreSQL, crie um banco chamado:
+
+```sql
+CREATE DATABASE taskflow_manager;
+```
+
 ## Backend
 
 Entre na pasta do backend:
@@ -61,7 +71,7 @@ npm install
 Crie o arquivo .env:
 
 ```bash
-DATABASE_URL="postgresql://postgres:SUA_SENHA@localhost:5432/taskflow_manager?schema=public"
+DATABASE_URL="postgresql://SEU_USUARIO:SUA_SENHA@localhost:5432/taskflow_manager?schema=public"
 PORT=3333
 FRONTEND_URL="http://localhost:3000"
 ```
