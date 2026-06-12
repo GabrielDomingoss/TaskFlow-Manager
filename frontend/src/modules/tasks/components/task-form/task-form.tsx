@@ -11,7 +11,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useTaskCreate } from "../../hooks/use-task-create";
 import { useTaskUpdate } from "../../hooks/use-task-update";
-import { CURRENT_USER_ID } from "../../constants/current-user";
 import { useCategoriesList } from "../../hooks/use-categories-list";
 import { TaskNotFound } from "../task-not-found";
 import { useState } from "react";
@@ -19,6 +18,8 @@ import { TaskConfirmDialog } from "../task-confirm-dialog";
 import { PageHeader } from "@/modules/common/components/page-header";
 import { TaskFormFields } from "./task-form-fields";
 import { TaskFormCategories } from "./task-form-categories";
+import { useCurrentUser } from "@/modules/users/hooks/use-current-service";
+import { toast } from "sonner";
 
 interface ITaskFormProps {
   initialData?: ITask;
@@ -34,6 +35,7 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
     useTaskUpdate();
   const { data: categories = [] } = useCategoriesList();
   const isSaving = isCreatingTask || isUpdatingTask;
+  const { data: currentUser } = useCurrentUser();
 
   const { register, control, handleSubmit, formState } = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
@@ -48,9 +50,14 @@ export function TaskForm({ initialData, isEditMode = false }: ITaskFormProps) {
   });
 
   const handleSubmitTask = async (data: TaskFormData) => {
+    if (!currentUser) {
+      toast.error("Usuário não carregado");
+      return;
+    }
+
     const payload = {
       ...data,
-      userId: CURRENT_USER_ID,
+      userId: currentUser.id,
     };
 
     if (isEditMode && initialData?.id) {
